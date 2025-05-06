@@ -1,0 +1,20 @@
+# Informe de practica_3.sh
+
+El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en Linux cumpliendo los requisitos establecidos.
+
+1. Privilegios y validaciones: Se verifica que el usuario tenga permisos de administrador (root en debian) y que los argumentos sean correctos  (-a para añadir, -s para eliminar). Se muestran mensajes adecuados en caso de error.
+
+2. Creación de usuarios (-a):
+   - Se valida que los tres campos sean correctos.
+   - Se usa `useradd` con `UID_MIN=1815`, creación de grupo, comentario, y directorio home basado en `/etc/skel`.
+   - La contraseña se asigna con `chpasswd` y la cuenta expira en 30 días.
+   - Si el usuario ya existe, se notifica  sin interrumpir la ejecución.
+
+3. Eliminación de usuarios (-s):
+   - Se crea `/extra/backup` si no existe.
+   - Se genera un respaldo del directorio home antes de eliminar al usuario con `userdel -r`.
+   - Si el usuario no existe , el script continúa sin mensaje.
+
+El script es robusto, automático y cumple con los formatos requeridos por el guion de la práctica.
+
+
