@@ -2,7 +2,7 @@
 Autor: David Puertolas Merenciano  
 NIA: 900584
 
-El script "practica_3.sh" automatiza la creación y eliminación de usuarios en 2 servidores distintod de 2 MVs, por parte de un Host.
+El script "practica_3.sh" automatiza la creación y eliminación de usuarios en 2 servidores distintos de 2 MVs, por parte de un Host.
 
 0. Crear red Host-Only en VirtualBox (Archivo (File) → Administrador de redes anfitrión (Host Network Manager))
    Dirección IPv4: 192.168.56.1
@@ -37,7 +37,7 @@ El script "practica_3.sh" automatiza la creación y eliminación de usuarios en 
 
       *Marcamos: "Cable conectado" esté activado en ambos adaptadores
 
-4. Asegurarse de que los Clientes (MVs) puedan usar sudo sin constraseña
+4. Asegurarse de que los Clientes (MVs) puedan usar sudo sin contraseña
    sudo visudo
    as ALL=(ALL) NOPASSWD:ALL
 
@@ -61,7 +61,7 @@ El script "practica_3.sh" automatiza la creación y eliminación de usuarios en 
 7. Configurar los Clientes (SSH) para deshabilitar el login como root (/etc/ssh/sshd_config)
       PermitRootLogin no
 
-8. Configurar la autenticación por clave pública (para poder conectarnos desde el host en los clientes sin constraseña)
+8. Configurar la autenticación por clave pública (para poder conectarnos desde el host en los clientes sin contraseña)
       Generar un par de claves ED25519 en nuestra máquina host
          ssh-keygen -t ed25519 -f ~/.ssh/id_as_ed25519
 
