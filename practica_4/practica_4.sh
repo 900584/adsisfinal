@@ -26,7 +26,7 @@ while read -r ip; do
     if ping -c 1 "$ip" &>/dev/null; then
         echo "Conectando con $ip..."
         scp -q -i "$clave" "$script_practica3" "$usuarios" "as@$ip:~"
-        ssh -i "$clave" -v "as@$ip" "sudo ~/practica_3.sh \"$opcion\" \"$usuarios\"; rm ~/practica_3.sh ~/$usuarios"
+        ssh -q -i "$clave" -v "as@$ip" "sudo ~/practica_3.sh \"$opcion\" \"$usuarios\"; rm ~/practica_3.sh ~/$usuarios"
     else
         echo "No se ha podido conectar a la maquina $ip" >&2
     fi
