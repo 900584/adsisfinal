@@ -34,3 +34,21 @@ El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en
 
       *Marcamos: "Cable conectado" esté activado en ambos adaptadores
 
+4. Nos aseguramos de que los Clientes (MVs) puedan usar sudo sin constraseña
+   sudo visudo
+   as ALL=(ALL) NOPASSWD:ALL
+
+
+5. Configuarar Interfaces de Red (/etc/network/interfaces)
+   Base ->
+      auto enp0s8
+      iface enp0s8 inet static
+          address 192.168.56.1 
+          netmask 255.255.255.0
+      
+   Clientes ->
+      auto enp0s8
+      iface enp0s8 inet static
+          address 192.168.56.11  #192.168.56.12 
+          netmask 255.255.255.0
+          gateway 192.168.56.1
