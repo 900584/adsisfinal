@@ -86,17 +86,17 @@ El script "practica_3.sh" automatiza la creación y eliminación de usuarios en 
         → elimina usuarios y guarda backup en /extra/backup
 
 10. Esquema de la red
-              ┌────────────┐
-              │    HOST    │
-              │  máquina   │
-              └─────┬──────┘
-                    │
-         SSH con clave id_ed25519
-                    │
-     ┌──────────────┴─────────────---─┐
-     │                                │
-┌────▼────---─┐               ┌───────▼──────┐
-│ MV1 (as)    │               │  MV2 (as)    │
-│192.168.56.11│               | 192.168.56.12│
-└──────────---┘               └──────────────┘
+
+                   ┌────────────┐
+                   │  HOST (as) │
+                   │192.168.56.1│ enp0s8
+                   └─────┬──────┘
+                         │
+                         │ SSH (clave pública id_as_ed25519)
+        ┌────────────────┴────────────────┐
+        │                                 │
+ ┌──────▼──────┐                  ┌───────▼───────┐
+ │   MV1 (as)  │                  │  MV2 (as)     │
+ │192.168.56.11│ enp0s8           │192.168.56.12  │ enp0s8
+ └─────────────┘                  └───────────────┘
 
