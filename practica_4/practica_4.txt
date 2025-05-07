@@ -38,7 +38,6 @@ El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en
    sudo visudo
    as ALL=(ALL) NOPASSWD:ALL
 
-
 5. Configuarar Interfaces de Red (/etc/network/interfaces)
    Base ->
       auto enp0s8
@@ -52,3 +51,10 @@ El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en
           address 192.168.56.11  #192.168.56.12 
           netmask 255.255.255.0
           gateway 192.168.56.1
+
+6. Instalamos el servidor SSH en las MVs (Debian package: openssh-server)
+      sudo apt install openssh-server
+
+7. Configuramos los Clientes (SSH) para deshabilitar el login como root (/etc/ssh/sshd_config)
+      PermitRootLogin no
+
