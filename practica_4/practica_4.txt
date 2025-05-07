@@ -1,6 +1,8 @@
 # Informe de practica_4.sh
+Autor: David Puertolas Merenciano  
+NIA: 900584
 
-El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en 2 servidores distintod de 2 MVs, por parte de un Host.
+El script "practica_3.sh" automatiza la creación y eliminación de usuarios en 2 servidores distintod de 2 MVs, por parte de un Host.
 
 0. Crear red Host-Only en VirtualBox (Archivo (File) → Administrador de redes anfitrión (Host Network Manager))
    Dirección IPv4: 192.168.56.1
@@ -8,6 +10,7 @@ El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en
    Servidor DHCP: Desactivado)
 
 1. Creacion del Host (En mi caso uso máquina base, no he tenido que crear MV) -> as_2025
+
 2. Creacion de los 2 clientes (Máquinas Virtuales)
    Clonado simple de Host -> as_2025_cliente / as_2025_cliente2
 
@@ -57,4 +60,39 @@ El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en
 
 7. Configuramos los Clientes (SSH) para deshabilitar el login como root (/etc/ssh/sshd_config)
       PermitRootLogin no
+
+8. Configuramos la autenticación por clave pública (para poder conectarnos desde el host en los clientes sin constraseña)
+      Generamos un par de claves ED25519 en nuestra máquina host
+         ssh-keygen -t ed25519 -f ~/.ssh/id_as_ed25519
+
+      Copiamos la clave pública en las máquinas virtuales
+         ssh-copy-id -i ~/.ssh/id_as_ed25519.pub as@192.168.56.11
+         ssh-copy-id -i ~/.ssh/id_as_ed25519.pub as@192.168.56.12
+
+9. Realizamos el Script: practica_4.sh
+      Entrada:
+         usuarios.txt → líneas tipo: usuario,password,nombre completo
+         maquinas.txt → IPs de las MVs, una por línea
+
+      Uso:
+        ./practica_4.sh -a usuarios.txt maquinas.txt  
+        → añade usuarios en cada MV
+
+        ./practica_4.sh -s usuarios.txt maquinas.txt  
+        → elimina usuarios y guarda backup en /extra/backup
+
+10. Esquema de la red
+              ┌────────────┐
+              │    HOST    │
+              │ mi máquina │
+              └─────┬──────┘
+                    │
+         SSH con clave id_ed25519
+                    │
+     ┌──────────────┴─────────────---─┐
+     │                                │
+┌────▼────---─┐               ┌───────▼──────┐
+│ MV1 (as)    │               │  MV2 (as)    │
+│192.168.56.11│               | 192.168.56.12│
+└──────────---┘               └──────────────┘
 
