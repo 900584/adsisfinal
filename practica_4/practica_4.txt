@@ -1,20 +1,36 @@
-# Informe de practica_3.sh
+# Informe de practica_4.sh
 
-El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en Linux cumpliendo los requisitos establecidos.
+El script "practica_3.sh"  automatiza la creación y eliminación de usuarios en 2 servidores distintod de 2 MVs, por parte de un Host.
 
-1. Privilegios y validaciones: Se verifica que el usuario tenga permisos de administrador (root en debian) y que los argumentos sean correctos  (-a para añadir, -s para eliminar). Se muestran mensajes adecuados en caso de error.
+0. Crear red Host-Only en VirtualBox (Archivo (File) → Administrador de redes anfitrión (Host Network Manager))
+   Dirección IPv4: 192.168.56.1
+   Máscara de red IPv4: 255.255.255.0
+   Servidor DHCP: Desactivado)
 
-2. Creación de usuarios (-a):
-   - Se valida que los tres campos sean correctos.
-   - Se usa `useradd` con `UID_MIN=1815`, creación de grupo, comentario, y directorio home basado en `/etc/skel`.
-   - La contraseña se asigna con `chpasswd` y la cuenta expira en 30 días.
-   - Si el usuario ya existe, se notifica  sin interrumpir la ejecución.
+1. Creacion del Host (En mi caso uso máquina base, no he tenido que crear MV) -> as_2025
+2. Creacion de los 2 clientes (Máquinas Virtuales)
+   Clonado simple de Host -> as_2025_cliente / as_2025_cliente2
 
-3. Eliminación de usuarios (-s):
-   - Se crea `/extra/backup` si no existe.
-   - Se genera un respaldo del directorio home antes de eliminar al usuario con `userdel -r`.
-   - Si el usuario no existe , el script continúa sin mensaje.
+3. Configurar redes (adaptadores)
+   Base -> 
+      Adaptador 1 (Internet)
+         Activado
+         Conectado a: NAT
 
-El script es robusto, automático y cumple con los formatos requeridos por el guion de la práctica.
+      Adaptador 2 (Red local con el host)
+         Activado
+         Conectado a: Adaptador solo-anfitrión (Host-Only Adapter)
+         Nombre: VirtualBox Host-Only Ethernet Adapter
 
+   Clientes ->
+      Adaptador 1 (Internet)
+         Marcamos "Habilitar adaptador de red"
+         Conectado a: NAT
+
+      Adaptador 2 (Red local con el host)
+         Marcamos "Habilitar adaptador de red"
+         Conectado a: Adaptador solo-anfitrión
+         Nombre: VirtualBox Host-Only Ethernet Adapter 
+
+      *Marcamos: "Cable conectado" esté activado en ambos adaptadores
 
