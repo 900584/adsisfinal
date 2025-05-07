@@ -1,62 +1,35 @@
 #!/bin/bash
-# 900584, Puertolas Merenciano, David
+# 900584, Puertolas Merenciano, David, M, 3, A
 
-if [[ $EUID -ne 0 ]]; then
-    echo "Este script necesita privilegios de administracion" >&2
+if [ $# -ne 3 ]; then
+    echo "Numero incorrecto de parametros" >&2
     exit 1
 fi
 
-if [[ $# -ne 2 ]]; then
-    echo "Numero incorrecto de parametros"
+opcion="$1"
+usuarios="$2"
+maquinas="$3"
+clave=~/.ssh/id_as_ed25519
+script_practica3="../practica_3/practica_3.sh"
+
+if [[ "$opcion" != "-a" && "$opcion" != "-s" ]]; then
+    echo "Opcion invalida. Usa -a o -s" >&2
     exit 1
 fi
 
-if [[ $1 != "-a" && $1 != "-s" ]]; then
-    echo "Opcion invalida" >&2
+if [[ ! -f "$usuarios" || ! -f "$maquinas" || ! -f "$script_practica3" ]]; then
+    echo "Fichero de usuarios, maquinas o script no encontrado" >&2
     exit 1
 fi
 
-if [[ "$1" == "-s" ]]; then
-    mkdir -p /extra/backup
-fi
-
-while IFS=, read -r usuario password nombre_completo; do
-    usuario=$(echo "$usuario" | xargs)
-    password=$(echo "$password" | xargs)
-    nombre_completo=$(echo "$nombre_completo" | xargs)
-    
-    if [[ "$1" == "-a" ]]; then
-        if [[ -z "$usuario" || -z "$password" || -z "$nombre_completo" ]]; then
-            echo "Campo invalido"
-            exit 1
-        fi
-        
-        if id "$usuario" &>/dev/null; then
-            echo "El usuario $usuario ya existe"
-        else
-            useradd -K UID_MIN=1815 -U -c "$nombre_completo" -m -k /etc/skel "$usuario"
-            echo "$usuario:$password" | chpasswd
-            usermod -e $(date -d "+30 days" +%Y-%m-%d) "$usuario"
-            echo "$nombre_completo ha sido creado"
-        fi
+while read -r ip; do
+    if ping -c 1 "$ip" &>/dev/null; then
+        echo "Conectando con $ip..."
+        scp -q -i "$clave" "$script_practica3" "$usuarios" "as@$ip:~"
+        ssh -q -i "$clave" "as@$ip" "sudo ~/practica_3.sh \"$opcion\" \"$usuarios\"; rm ~/practica_3.sh ~/$usuarios"
     else
-        if [[ -z "$usuario" ]]; then
-            echo "Campo invalido"
-            exit 1
-        fi
-        
-        if id "$usuario" &>/dev/null; then
-            home_dir=$(eval echo ~$usuario)
-            if [ -d "$home_dir" ]; then
-                tar -cf "/extra/backup/$usuario.tar" "$home_dir" &>/dev/null
-                if [[ $? -eq 0 ]]; then
-                    userdel -r "$usuario"
-                fi
-            else
-                userdel "$usuario"
-            fi
-        fi
+        echo "No se ha podido conectar a la maquina $ip" >&2
     fi
-done < "$2"
+done < "$maquinas"
 
 exit 0
