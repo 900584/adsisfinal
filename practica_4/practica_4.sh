@@ -9,7 +9,7 @@ fi
 opcion="$1"
 usuarios="$2"
 maquinas="$3"
-clave=~/.ssh/id_as_ed25519
+clave=~/.ssh/id_ed25519
 script_practica3="../practica_3/practica_3.sh"
 
 if [[ "$opcion" != "-a" && "$opcion" != "-s" ]]; then
