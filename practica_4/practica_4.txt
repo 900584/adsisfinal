@@ -95,7 +95,7 @@ El script "practica_3.sh" automatiza la creación y eliminación de usuarios en 
                          │ SSH (clave pública id_as_ed25519)
         ┌────────────────┴────────────────┐
         │                |                │
- ┌──────▼──────┐         |       ┌───────▼───────┐
+ ┌──────▼──────┐         |       ┌────────▼──────┐
  │   MV1 (as)  │         |       │  MV2 (as)     │
  │192.168.56.11│ enp0s8  |       │ 192.168.56.12 │ enp0s8
  └─────────────┘ - - -  NAT - - -└───────────────┘
