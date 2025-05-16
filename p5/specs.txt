@@ -1,2 +1,2 @@
-vg_p5,lv_data,10M,ext4,/mnt/data
-vg_p5,lv_logs,5M,xfs,/mnt/logs
+lv_data 10M /mnt/data ext4
+lv_logs 16M /mnt/logs xfs
