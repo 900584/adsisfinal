@@ -1,0 +1,2 @@
+vg_p5,lv_data,10M,ext4,/mnt/data
+vg_p5,lv_logs,5M,xfs,/mnt/logs
